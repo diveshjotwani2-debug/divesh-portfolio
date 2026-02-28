@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Divesh Dhiraj Jotwani — Creative Media & Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --cream: #f5f0e8;
+    --orange: #ff4d1c;
+    --gold: #d4a843;
+    --muted: #888;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom Cursor */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--orange);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+    mix-blend-mode: difference;
+  }
+  .cursor-follower {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid var(--orange);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: left 0.12s ease, top 0.12s ease, width 0.3s, height 0.3s;
+    opacity: 0.5;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.3;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 48px;
+    mix-blend-mode: difference;
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.2em;
+    color: var(--cream);
+  }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--cream);
+    text-decoration: none;
+    text-transform: uppercase;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 100px 48px 80px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.3s forwards;
+  }
+  .hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 10vw, 10rem);
+    line-height: 0.9;
+    color: var(--cream);
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+  }
+  .hero-name span {
+    display: block;
+    color: var(--orange);
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(3rem, 6vw, 6rem);
+  }
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-style: italic;
+    color: var(--muted);
+    margin-top: 24px;
+    max-width: 420px;
+    line-height: 1.6;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.7s forwards;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 48px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+    border-bottom: 1px solid var(--orange);
+    padding-bottom: 8px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.9s forwards;
+    transition: color 0.2s, gap 0.2s;
+  }
+  .hero-cta:hover { color: var(--orange); gap: 20px; }
+
+  .hero-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-big-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(8rem, 18vw, 22rem);
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(245,240,232,0.07);
+    position: absolute;
+    white-space: nowrap;
+    user-select: none;
+    animation: floatText 8s ease-in-out infinite;
+  }
+  .hero-stats {
+    position: absolute;
+    bottom: 80px;
+    right: 48px;
+    text-align: right;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.1s forwards;
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* Diagonal divider */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--orange), transparent);
+    opacity: 0.3;
+  }
+
+  /* MARQUEE */
+  .marquee-section {
+    overflow: hidden;
+    border-top: 1px solid rgba(245,240,232,0.08);
+    border-bottom: 1px solid rgba(245,240,232,0.08);
+    padding: 18px 0;
+    background: var(--orange);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 60px;
+    animation: marquee 20s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    color: var(--black);
+    flex-shrink: 0;
+  }
+  .marquee-dot {
+    color: var(--black);
+    opacity: 0.4;
+  }
+
+  /* ABOUT */
+  .about {
+    padding: 120px 48px;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--orange);
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    height: fit-content;
+    align-self: flex-start;
+    margin-top: 12px;
+  }
+  .about-content h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    line-height: 1.15;
+    color: var(--cream);
+    margin-bottom: 32px;
+  }
+  .about-content h2 em {
+    color: var(--gold);
+    font-style: italic;
+  }
+  .about-content p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: rgba(245,240,232,0.7);
+    max-width: 600px;
+  }
+
+  /* SKILLS CHIPS */
+  .skills-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 40px;
+  }
+  .chip {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    padding: 8px 16px;
+    border: 1px solid rgba(245,240,232,0.15);
+    color: rgba(245,240,232,0.6);
+    text-transform: uppercase;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .chip::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s;
+    z-index: -1;
+  }
+  .chip:hover { color: var(--black); border-color: var(--orange); }
+  .chip:hover::before { transform: scaleX(1); }
+
+  /* WORK / CLIENTS */
+  .work-section {
+    padding: 80px 48px 120px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .work-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 64px;
+    border-bottom: 1px solid rgba(245,240,232,0.08);
+    padding-bottom: 32px;
+  }
+  .work-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    color: var(--cream);
+    line-height: 1;
+  }
+  .work-header h2 span { color: var(--orange); }
+  .work-count {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .clients-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(245,240,232,0.06);
+  }
+  .client-card {
+    background: var(--black);
+    padding: 48px 40px;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+  }
+  .client-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 2px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  .client-card:hover { background: rgba(255,77,28,0.05); }
+  .client-card:hover::before { transform: scaleX(1); }
+  .client-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--orange);
+    opacity: 0.6;
+    margin-bottom: 20px;
+    display: block;
+  }
+  .client-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 8px;
+    transition: color 0.2s;
+  }
+  .client-card:hover .client-name { color: var(--orange); }
+  .client-type {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .client-desc {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.05em;
+    color: rgba(245,240,232,0.4);
+    line-height: 1.7;
+  }
+  .client-arrow {
+    position: absolute;
+    top: 48px; right: 40px;
+    font-size: 1.2rem;
+    color: var(--orange);
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translate(-8px, 8px);
+  }
+  .client-card:hover .client-arrow { opacity: 1; transform: translate(0,0); }
+
+  /* EXPERIENCE TIMELINE */
+  .exp-section {
+    padding: 80px 48px 120px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .exp-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    color: var(--cream);
+    margin-bottom: 64px;
+  }
+  .exp-section h2 span { color: var(--gold); }
+  .timeline {
+    display: grid;
+    gap: 0;
+  }
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 220px 40px 1fr;
+    gap: 0 20px;
+    padding-bottom: 60px;
+    position: relative;
+  }
+  .timeline-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--orange);
+    text-align: right;
+    padding-top: 4px;
+    opacity: 0.8;
+  }
+  .timeline-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .timeline-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--orange);
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .timeline-vert {
+    width: 1px;
+    flex: 1;
+    background: rgba(255,77,28,0.2);
+    margin-top: 6px;
+  }
+  .timeline-item:last-child .timeline-vert { display: none; }
+  .timeline-role {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+  .timeline-company {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .timeline-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .timeline-bullets li {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: rgba(245,240,232,0.6);
+    line-height: 1.6;
+    padding-left: 16px;
+    position: relative;
+  }
+  .timeline-bullets li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--orange);
+    opacity: 0.5;
+  }
+
+  /* CONTACT */
+  .contact-section {
+    padding: 100px 48px;
+    background: var(--cream);
+    color: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-section::before {
+    content: 'HIRE ME';
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20vw;
+    color: rgba(0,0,0,0.04);
+    bottom: -40px;
+    left: 0;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .contact-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .contact-inner h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 9vw, 9rem);
+    line-height: 0.9;
+    color: var(--black);
+    margin-bottom: 48px;
+  }
+  .contact-inner h2 span {
+    color: var(--orange);
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    display: block;
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: end;
+  }
+  .contact-info p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: rgba(10,10,10,0.65);
+    margin-bottom: 32px;
+  }
+  .contact-links { display: flex; flex-direction: column; gap: 12px; }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--black);
+    text-decoration: none;
+    transition: color 0.2s, gap 0.2s;
+  }
+  .contact-link:hover { color: var(--orange); gap: 20px; }
+  .contact-link-icon {
+    width: 28px; height: 28px;
+    border: 1px solid currentColor;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+    transition: background 0.2s, color 0.2s;
+  }
+  .contact-link:hover .contact-link-icon {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: white;
+  }
+
+  .email-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    letter-spacing: 0.05em;
+    color: var(--black);
+    text-decoration: none;
+    border-bottom: 2px solid var(--orange);
+    padding-bottom: 4px;
+    display: inline-block;
+    transition: color 0.2s;
+  }
+  .email-big:hover { color: var(--orange); }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(245,240,232,0.06);
+  }
+  footer p {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes floatText {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    33% { transform: translateY(-20px) translateX(10px); }
+    66% { transform: translateY(10px) translateX(-10px); }
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 120px 24px 60px; }
+    .about { grid-template-columns: 1fr; padding: 80px 24px; }
+    .section-label { writing-mode: horizontal-tb; transform: none; }
+    .clients-grid { grid-template-columns: 1fr; }
+    .work-section, .exp-section { padding: 60px 24px; }
+    .timeline-item { grid-template-columns: 110px 30px 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .contact-section { padding: 60px 24px; }
+    footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="follower"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">DDJ</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">✦ Creative Media &amp; Marketing Professional</div>
+    <div class="hero-name">
+      Divesh
+      <span>Dhiraj</span>
+      Jotwani
+    </div>
+    <p class="hero-tagline">I don't just design or edit — I plan, shoot, execute, publish, and improve content based on what actually works for the business.</p>
+    <a href="#work" class="hero-cta">View My Work <span>→</span></a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-big-text">CREATE</div>
+    <div class="hero-stats">
+      <span class="stat-num">10+</span>
+      <span class="stat-label">Brands Served</span>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item">Video Editing</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Brand Shoots</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Reels & Content</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Shopify Management</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Digital Marketing</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">AI-Based Creatives</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">SEO Basics</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Power BI</span><span class="marquee-dot">✦</span>
+    <!-- duplicate for infinite loop -->
+    <span class="marquee-item">Video Editing</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Brand Shoots</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Reels & Content</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Shopify Management</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Digital Marketing</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">AI-Based Creatives</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">SEO Basics</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Power BI</span><span class="marquee-dot">✦</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about reveal" id="about">
+  <div class="section-label">About Me</div>
+  <div class="about-content">
+    <h2>I build brands,<br>create content &amp;<br>turn ideas into <em>real results.</em></h2>
+    <p>Currently at VRNN Technologies, I handle everything from video editing, shoots, and content creation to website management and digital marketing for multiple clients. Based in Belgaum, Karnataka — delivering creative excellence across India.</p>
+    <div class="skills-chips">
+      <div class="chip">Video Editing</div>
+      <div class="chip">AI Posters & Visuals</div>
+      <div class="chip">Brand Shoots</div>
+      <div class="chip">Creative Direction</div>
+      <div class="chip">Shopify</div>
+      <div class="chip">Digital Marketing</div>
+      <div class="chip">SEO Basics</div>
+      <div class="chip">Python</div>
+      <div class="chip">Power BI</div>
+      <div class="chip">HTML · CSS</div>
+      <div class="chip">AWS</div>
+      <div class="chip">MongoDB</div>
+      <div class="chip">Advanced Excel</div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK / CLIENTS -->
+<section class="work-section reveal" id="work">
+  <div class="work-header">
+    <h2>Selected <span>Clients</span></h2>
+    <div>
+      <div class="work-count">06 Projects</div>
+    </div>
+  </div>
+  <div class="clients-grid">
+
+    <a class="client-card" href="https://satikasarees.in/" target="_blank">
+      <span class="client-num">01</span>
+      <div class="client-name">Satika Sarees</div>
+      <div class="client-type">Fashion E-Commerce</div>
+      <div class="client-desc">Full website management, product listings,<br>content, Shopify operations &amp; analytics.</div>
+      <div class="client-arrow">↗</div>
+    </a>
+
+    <a class="client-card" href="https://www.instagram.com/satika_sarees_official/" target="_blank">
+      <span class="client-num">02</span>
+      <div class="client-name">Satika Sarees Instagram</div>
+      <div class="client-type">Social Media · Fashion</div>
+      <div class="client-desc">Reels, promotional videos, AI-based creatives,<br>and social media marketing campaigns.</div>
+      <div class="client-arrow">↗</div>
+    </a>
+
+    <a class="client-card" href="https://www.instagram.com/marajakkedrshivashankar/" target="_blank">
+      <span class="client-num">03</span>
+      <div class="client-name">Dr. Shivashankar</div>
+      <div class="client-type">Healthcare · Personal Brand</div>
+      <div class="client-desc">Brand content creation and creative direction<br>for a medical professional's digital presence.</div>
+      <div class="client-arrow">↗</div>
+    </a>
+
+    <a class="client-card" href="https://www.instagram.com/sonal_beauty2025/" target="_blank">
+      <span class="client-num">04</span>
+      <div class="client-name">Sonal Beauty</div>
+      <div class="client-type">Beauty · Lifestyle</div>
+      <div class="client-desc">Content creation, reels &amp; promotional visuals<br>for beauty brand social media growth.</div>
+      <div class="client-arrow">↗</div>
+    </a>
+
+    <a class="client-card" href="https://www.instagram.com/omsfitnessrehab/" target="_blank">
+      <span class="client-num">05</span>
+      <div class="client-name">OMS Fitness Rehab</div>
+      <div class="client-type">Fitness · Health</div>
+      <div class="client-desc">Creative content &amp; marketing strategy<br>for a fitness and rehabilitation center.</div>
+      <div class="client-arrow">↗</div>
+    </a>
+
+    <a class="client-card" href="https://www.instagram.com/ame_institute/" target="_blank">
+      <span class="client-num">06</span>
+      <div class="client-name">AME Institute</div>
+      <div class="client-type">Education</div>
+      <div class="client-desc">End-to-end content workflow, educational<br>creatives &amp; digital marketing campaigns.</div>
+      <div class="client-arrow">↗</div>
+    </a>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="exp-section reveal" id="experience">
+  <h2>Work <span>History</span></h2>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-date">2025 — Present</div>
+      <div class="timeline-line">
+        <div class="timeline-dot"></div>
+        <div class="timeline-vert"></div>
+      </div>
+      <div>
+        <div class="timeline-role">Creative Media & Marketing Executive</div>
+        <div class="timeline-company">VRNN Technologies</div>
+        <ul class="timeline-bullets">
+          <li>Handle complete content workflow — ideation, shoot planning, editing and publishing</li>
+          <li>Create reels, promotional videos, posters, and AI-based creatives</li>
+          <li>Manage client websites and digital content, including Shopify store operations</li>
+          <li>Delivered creative work for 10+ businesses across fitness, fashion, healthcare, education, real estate, and retail</li>
+          <li>Contributed to marketing for CREDAI RECON Expo 2026</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">Apr 2024 — Jan 2025</div>
+      <div class="timeline-line">
+        <div class="timeline-dot"></div>
+        <div class="timeline-vert"></div>
+      </div>
+      <div>
+        <div class="timeline-role">Business Analyst & Growth Associate</div>
+        <div class="timeline-company">Verbally Learning</div>
+        <ul class="timeline-bullets">
+          <li>Built Power BI dashboards for sales performance and lead tracking</li>
+          <li>Developed lead generation forms using Python</li>
+          <li>Supported email marketing campaigns with data-driven insights</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">2022 — 2025</div>
+      <div class="timeline-line">
+        <div class="timeline-dot"></div>
+        <div class="timeline-vert"></div>
+      </div>
+      <div>
+        <div class="timeline-role">Bachelor of Computer Applications (BCA)</div>
+        <div class="timeline-company">KLE RLS College, Belgaum</div>
+        <ul class="timeline-bullets">
+          <li>Graduated with strong foundations in programming, databases, and web technologies</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner reveal">
+    <h2>Let's<br><span>Work Together</span></h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p>Looking for someone who thinks, creates, and executes — not just for views, but for real business impact? Let's talk.</p>
+        <a href="mailto:diveshjotwani2@gmail.com" class="email-big">diveshjotwani2@gmail.com</a>
+      </div>
+      <div>
+        <div class="contact-links">
+          <a href="tel:+916360321605" class="contact-link">
+            <div class="contact-link-icon">📞</div>
+            +91 6360 321 605
+          </a>
+          <a href="https://satikasarees.in/" target="_blank" class="contact-link">
+            <div class="contact-link-icon">🌐</div>
+            satikasarees.in — Live Project
+          </a>
+          <a href="https://www.instagram.com/satika_sarees_official/" target="_blank" class="contact-link">
+            <div class="contact-link-icon">📸</div>
+            Instagram Clients Portfolio
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Divesh Dhiraj Jotwani. Belgaum, Karnataka, India.</p>
+  <p>Creative Media &amp; Marketing Professional</p>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const follower = document.getElementById('follower');
+  let mx = 0, my = 0, fx = 0, fy = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animateFollower() {
+    fx += (mx - fx) * 0.1;
+    fy += (my - fy) * 0.1;
+    follower.style.left = fx + 'px';
+    follower.style.top = fy + 'px';
+    requestAnimationFrame(animateFollower);
+  }
+  animateFollower();
+
+  // Hover effects on cursor
+  document.querySelectorAll('a, button, .chip').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
+      follower.style.width = '60px';
+      follower.style.height = '60px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '12px';
+      cursor.style.height = '12px';
+      follower.style.width = '36px';
+      follower.style.height = '36px';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
